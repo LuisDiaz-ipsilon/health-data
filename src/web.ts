@@ -7,4 +7,13 @@ export class HealthDataPluginWeb extends WebPlugin implements HealthDataPluginPl
     console.log('ECHO', options);
     return options;
   }
+
+  async getSteps(): Promise<{ name: string, count: number }> {
+    return {
+    name : "Name Sensor",
+    count : 300
+    }
+  }
+
 }
+
