@@ -38,6 +38,7 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
     private AppCompatActivity activity;
     private SensorManager sensorManager;
     private Sensor stepCounterSensor;
+    private float stepCount = 0;
     private HealthDataPlugin implementation = new HealthDataPlugin();
 
     @Override
@@ -63,6 +64,7 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
         System.out.println("onSensorChanged: activity detected");
         if (sensorEvent.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             notifyListeners("count", ret);
+            this.stepCount = sensorEvent.values[0];
             ret.put("count", sensorEvent.values[0]);
             System.out.println(sensorEvent.values[0]);
         }
@@ -107,8 +109,7 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
             JSObject res = new JSObject();
 
             res.put("name", stepCounterSensor.getName());
-
-
+            res.put("count", this.stepCount);
             call.resolve(res);
         } else {
             call.reject("Light sensor not available cannot get info");
