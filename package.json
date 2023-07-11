@@ -1,6 +1,6 @@
 {
   "name": "health-data",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Capacitor Plugin to Retrieve User's Device Step Count on Android",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
