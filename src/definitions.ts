@@ -1,9 +1,54 @@
+/**
+ * Plugin for accessing health data and step counters.
+ */
 export interface HealthDataPluginPlugin {
+  /**
+   * Echoes back the provided value.
+   * @param {object} options - The options object.
+   * @param {string} options.value - The value to echo.
+   * @returns {Promise<{ value: string }>} - A promise that resolves to an object containing the echoed value.
+   * @example
+   * const result = await HealthDataPlugin.echo({ value: "Hello, world!" });
+   * console.log(result.value); // "Hello, world!"
+   */
   echo(options: { value: string }): Promise<{ value: string }>;
+
+  /**
+   * Retrieves the step count value from the step counter sensor since it was started.
+   * Returns null if the necessary permissions have not been granted.
+   * Once the permissions are granted, subsequent calls will return the correct step count value.
+   * If the device doesn't have a step counter sensor, it won't return anything, but a message indicating that the sensor is not available will be logged to the console.
+   * @returns {Promise<{ name: string, count: number }>} - A promise that resolves to an object containing the name of the sensor and the current step count value.
+   * @example
+   * const result = await HealthDataPlugin.getSteps();
+   * console.log(result.name); // Name of the sensor
+   * console.log(result.count); // Current step count
+   */
   getSteps(): Promise<{ name: string, count: number }>;
+
+  /**
+   * Checks the status of the permission and requests it for the first time if it hasn't been granted.
+   * The permission status remains unchanged once it has been granted for the rest of the application usage.
+   * @param {CheckPermissionOptions} [options] - The options object.
+   * @returns {Promise<CheckPermissionResult>} - A promise that resolves to an object containing the permission status.
+   * @example
+   * const result = await HealthDataPlugin.checkPermission();
+   * console.log(result.granted); // true if the permission is granted, false otherwise
+   * console.log(result.asked); // true if the permission has been asked before, false otherwise
+   * console.log(result.neverAsked); // true if the permission has never been asked before, false otherwise
+   * console.log(result.denied); // true if the permission is denied, false otherwise
+   */
   checkPermission(options?: CheckPermissionOptions): Promise<CheckPermissionResult>;
+
+  /**
+   * Opens the app settings screen for the current app.
+   * @returns {Promise<void>} - A promise that resolves once the app settings screen is opened.
+   * @example
+   * await HealthDataPlugin.openAppSettings();
+   */
   openAppSettings(): Promise<void>;
 }
+
 
 export interface CheckPermissionOptions {
   /**

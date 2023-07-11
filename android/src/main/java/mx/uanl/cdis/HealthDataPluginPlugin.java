@@ -19,7 +19,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.content.Context;
-
 import android.Manifest;
 import android.os.Build;
 import android.content.SharedPreferences;
@@ -43,16 +42,19 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
 
     @Override
     public void load() {
+        //When starting the application this method will be executed first.
         this.activity = getActivity();
         initSensors(this.activity);
     }
 
     private void initSensors(AppCompatActivity activity) {
+        //We set the required sensors.
         sensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
         stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
     }
 
     private void registerAvailableSensors() {
+        //Refresh rate is set.
         if (stepCounterSensor != null) {
             sensorManager.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
@@ -60,25 +62,23 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
+        //Whenever the sensor value changes this method will be executed. It is necessary to have the permission granted and that the device has the sensor.
         JSObject ret = getJSObjectForSensorData(sensorEvent);
-        System.out.println("onSensorChanged: activity detected");
         if (sensorEvent.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             notifyListeners("count", ret);
             this.stepCount = sensorEvent.values[0];
             ret.put("count", sensorEvent.values[0]);
-            System.out.println(sensorEvent.values[0]);
         }
     }
 
     private JSObject getJSObjectForSensorData(SensorEvent event) {
         JSObject res = new JSObject();
         res.put("count", event.values[0]);
-        System.out.println(event.values[0]);
         return res;
     }
 
     private boolean isSensorAvailable() {
-
+        //validate sensor.
         if(sensorManager==null){
             sensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
         }
@@ -91,16 +91,18 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
     }
 
     protected void onResume(){
+        //Resets the sensor with the refresh time values.
         sensorManager.registerListener(this, stepCounterSensor, sensorManager.SENSOR_DELAY_FASTEST);
     }
 
     protected void onPause(){
+        //Pause the update of the value of the steps.
         sensorManager.unregisterListener(this);
-
     }
 
     @PluginMethod
     public void getSteps(PluginCall call){
+        //
         if(isSensorAvailable()){
             this.load();
             this.registerAvailableSensors();
@@ -112,13 +114,16 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
             res.put("count", this.stepCount);
             call.resolve(res);
         } else {
-            call.reject("Light sensor not available cannot get info");
+            call.reject("Step counter sensor not available cannot get info");
         }
 
     }
 
     @PluginMethod
     public void echo(PluginCall call) {
+        //Main method, in case the permission has not been granted,
+        // it will return null, in the solution of the call returned two values,
+        // string: sensor name, float: number of steps.
         String value = call.getString("value");
 
         JSObject ret = new JSObject();
@@ -143,20 +148,16 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
 
     void _checkPermission(PluginCall call, boolean force) {
         this.savedReturnObject = new JSObject();
-        System.out.println("Entrando a solicitar permiso");
 
         if (getPermissionState(PERMISSION_ALIAS_ACTIVITY_RECOGNITION) == PermissionState.GRANTED) {
             // permission GRANTED
-            System.out.println("Otorgado");
             this.savedReturnObject.put(GRANTED, true);
         } else {
             // permission NOT YET GRANTED
-            System.out.println("No otorgado");
 
             // check if asked before
             boolean neverAsked = isPermissionFirstTimeAsking(PERMISSION_NAME);
             if (neverAsked) {
-                System.out.println("Nunca preguntado");
                 this.savedReturnObject.put(NEVER_ASKED, true);
             }
 
@@ -174,14 +175,12 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
                     if (force) {
                         // request permission
                         // so a callback can be made from the handleRequestPermissionsResult
-                        System.out.println("Request Permission Alias");
                         requestPermissionForAlias(PERMISSION_ALIAS_ACTIVITY_RECOGNITION, call, "stepsPermsCallback");
                         return;
                     }
                 } else {
                     // permission DENIED
                     // user ALSO checked "NEVER ASK AGAIN"
-                    System.out.println("Permiso Denegado");
                     this.savedReturnObject.put(DENIED, true);
                 }
             } else {
@@ -189,7 +188,6 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
                 // no runtime permissions exist
                 // so always
                 // permission GRANTED
-                System.out.println("No runtime permissions exist");
                 this.savedReturnObject.put(GRANTED, true);
             }
         }
@@ -254,7 +252,7 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
         }
         // resolve saved call
         call.resolve(this.savedReturnObject);
-        // release saved vars
+        // release saved
         this.savedReturnObject = null;
     }
 
