@@ -17,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LuisDiaz-ipsilon/Halth-Data-Plugin.git"
+    "url": "git+https://github.com/LuisDiaz-ipsilon/health-data"
   },
   "bugs": {
-    "url": "https://github.com/LuisDiaz-ipsilon/Halth-Data-Plugin/issues"
+    "url": "https://github.com/LuisDiaz-ipsilon/health-data/issues"
   },
   "keywords": [
     "capacitor",
