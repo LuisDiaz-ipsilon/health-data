@@ -104,15 +104,20 @@ public class HealthDataPluginPlugin extends Plugin implements SensorEventListene
     public void getSteps(PluginCall call){
         //
         if(isSensorAvailable()){
-            this.load();
-            this.registerAvailableSensors();
-            onResume();
+            if (getPermissionState(PERMISSION_ALIAS_ACTIVITY_RECOGNITION) == PermissionState.GRANTED) {
+                this.load();
+                this.registerAvailableSensors();
 
-            JSObject res = new JSObject();
+                JSObject res = new JSObject();
 
-            res.put("name", stepCounterSensor.getName());
-            res.put("count", this.stepCount);
-            call.resolve(res);
+                res.put("name", stepCounterSensor.getName());
+                res.put("count", this.stepCount);
+                call.resolve(res);
+            } else{
+                // Permission denied, request permission
+                PluginCall permissionCall = call;
+                _checkPermission(permissionCall, true);
+            }
         } else {
             call.reject("Step counter sensor not available cannot get info");
         }
