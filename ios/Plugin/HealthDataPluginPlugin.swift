@@ -35,7 +35,7 @@ public class HealthDataPluginPlugin: CAPPlugin {
 
     var stepCountSensor: AVCaptureDevice?
 
-    @objc func checkPermission(_ call: CAPPluginCall) {
+    @objc override func checkPermission(_ call: CAPPluginCall) {
         let locationState: String
 
         switch CLLocationManager.authorizationStatus() {
@@ -56,6 +56,7 @@ public class HealthDataPluginPlugin: CAPPlugin {
         AVCaptureDevice.requestAccess(for: .stepCountSensor) { [weak self] _ in
             self?.checkPermissions(call)
         }
+        call.resolve(["force", true])
     }
 
 }
