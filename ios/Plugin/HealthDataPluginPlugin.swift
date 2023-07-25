@@ -52,7 +52,7 @@ public class HealthDataPluginPlugin: CAPPlugin {
         call.resolve(["location": locationState])
     }
 
-    @objc func requestPermissions(_ call: CAPPluginCall) {
+    @objc override func requestPermissions(_ call: CAPPluginCall) {
         AVCaptureDevice.requestAccess(for: .stepCountSensor) { [weak self] _ in
             self?.checkPermissions(call)
         }
