@@ -7,7 +7,7 @@ import AVFoundation
  * here: https://capacitorjs.com/docs/plugins/ios
  */
 @objc(HealthDataPluginPlugin)
-public class HealthDataPluginPlugin: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
+public class HealthDataPluginPlugin: CAPPlugin {
     private let implementation = HealthDataPlugin()
 
     @objc func echo(_ call: CAPPluginCall) {
@@ -35,7 +35,7 @@ public class HealthDataPluginPlugin: CAPPlugin, AVCaptureMetadataOutputObjectsDe
 
     var stepCountSensor: AVCaptureDevice?
 
-    @objc override func checkPermission(_ call: CAPPluginCall) {
+    @objc func checkPermission(_ call: CAPPluginCall) {
         let locationState: String
 
         switch CLLocationManager.authorizationStatus() {
@@ -52,7 +52,7 @@ public class HealthDataPluginPlugin: CAPPlugin, AVCaptureMetadataOutputObjectsDe
         call.resolve(["location": locationState])
     }
 
-    @objc override func requestPermissions(_ call: CAPPluginCall) {
+    @objc func requestPermissions(_ call: CAPPluginCall) {
         AVCaptureDevice.requestAccess(for: .stepCountSensor) { [weak self] _ in
             self?.checkPermissions(call)
         }
