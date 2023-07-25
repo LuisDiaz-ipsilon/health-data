@@ -15,4 +15,13 @@ public class HealthDataPluginPlugin: CAPPlugin {
             "value": implementation.echo(value)
         ])
     }
+
+    @objc func getSteps(_ call : CAPPluginCall){
+        //let value = 
+        call.resolve([
+            "name": 'Step Counter Sensor ',
+            "count": 10
+        ])
+    }
+
 }
