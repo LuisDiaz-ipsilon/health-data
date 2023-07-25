@@ -17,13 +17,13 @@ public class HealthDataPluginPlugin: CAPPlugin {
     }
 
     override public func load(){
-        
+
     }
 
     @objc func getSteps(_ call : CAPPluginCall){
         //let value = 
         call.resolve([
-            "name": 'Step Counter Sensor ',
+            "name": "Step Counter Sensor",
             "count": 10
         ])
     }
