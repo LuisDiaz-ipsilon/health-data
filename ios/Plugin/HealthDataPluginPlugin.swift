@@ -52,8 +52,9 @@ public class HealthDataPluginPlugin: CAPPlugin {
     }
 
     @objc override func requestPermissions(_ call: CAPPluginCall) {
-    AVCaptureDevice.requestAccess(for: .stepCountSensor) { [weak self] _ in
-        self?.checkPermissions(call)
+        AVCaptureDevice.requestAccess(for: .stepCountSensor) { [weak self] _ in
+            self?.checkPermissions(call)
+        }
     }
 
 }
