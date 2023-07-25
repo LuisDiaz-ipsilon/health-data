@@ -28,4 +28,21 @@ public class HealthDataPluginPlugin: CAPPlugin {
         ])
     }
 
+    @objc override func checkPermission(_ call: CAPPluginCall) {
+        let locationState: String
+
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            locationState = "prompt"
+        case .restricted, .denied:
+            locationState = "denied"
+        case .authorizedAlways, .authorizedWhenInUse:
+            locationState = "granted"
+        @unknown default:
+            locationState = "prompt"
+        }
+
+        call.resolve(["location": locationState])
+    }
+
 }
