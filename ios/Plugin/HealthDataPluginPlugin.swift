@@ -10,7 +10,7 @@ public class HealthDataPluginPlugin: CAPPlugin {
     private let implementation = HealthDataPlugin()
 
     @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
+        let value = call.getString("value") ?? "no message"
         call.resolve([
             "value": implementation.echo(value)
         ])
