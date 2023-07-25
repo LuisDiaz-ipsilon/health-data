@@ -7,7 +7,7 @@ import AVFoundation
  * here: https://capacitorjs.com/docs/plugins/ios
  */
 @objc(HealthDataPluginPlugin)
-public class HealthDataPluginPlugin: CAPPlugin {
+public class HealthDataPluginPlugin: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
     private let implementation = HealthDataPlugin()
 
     @objc func echo(_ call: CAPPluginCall) {
