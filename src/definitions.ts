@@ -40,6 +40,8 @@ export interface HealthDataPluginPlugin {
    */
   checkPermission(options?: CheckPermissionOptions): Promise<CheckPermissionResult>;
 
+  requestPermissions(options?: CheckPermissionOptions) : Promise<CheckPermissionResult>;
+
   /**
    * Opens the app settings screen for the current app.
    * @returns {Promise<void>} - A promise that resolves once the app settings screen is opened.
