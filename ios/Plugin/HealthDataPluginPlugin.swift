@@ -594,7 +594,7 @@ public class HealthDataPluginPlugin: CAPPlugin {
 
         call.resolve([
             "name": "Step Counter Sensor",
-            "count": stepCount.getJSObjtect()
+            "count": 10
         ])
         
     }
