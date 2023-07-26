@@ -10,6 +10,8 @@ import AVFoundation
 public class HealthDataPluginPlugin: CAPPlugin {
     private let implementation = HealthDataPlugin()
 
+    static let stepCount: HKQuantityTypeIdentifier
+
     @objc func echo(_ call: CAPPluginCall) {
         let value = call.getString("value") ?? "no message"
         call.resolve([
@@ -22,11 +24,17 @@ public class HealthDataPluginPlugin: CAPPlugin {
     }
 
     @objc func getSteps(_ call : CAPPluginCall){
-        //let value = 
+        if !isHealthKitPermissionGranted(){
+            requestPermissions(call, CallingMethod)
+        } else {
+            stepCount = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+        }
+
         call.resolve([
             "name": "Step Counter Sensor",
-            "count": 10
+            "count": stepCount.getJSObjtect()
         ])
+        
     }
 
     @objc func openAppSettings(_ call : CAPPluginCall){
@@ -36,27 +44,37 @@ public class HealthDataPluginPlugin: CAPPlugin {
     var stepCountSensor: AVCaptureDevice?
 
     @objc override func checkPermission(_ call: CAPPluginCall) {
-        let locationState: String
+        let permissionState: String
 
         switch CLLocationManager.authorizationStatus() {
         case .notDetermined:
-            locationState = "prompt"
+            permissionState = "prompt"
         case .restricted, .denied:
-            locationState = "denied"
+            permissionState = "denied"
         case .authorizedAlways, .authorizedWhenInUse:
-            locationState = "granted"
+            permissionState = "granted"
         @unknown default:
-            locationState = "prompt"
+            permissionState = "prompt"
         }
 
-        call.resolve(["location": locationState])
+        call.resolve(["health": permissionState])
     }
 
     @objc override func requestPermissions(_ call: CAPPluginCall) {
-        AVCaptureDevice.requestAccess(for: .stepCountSensor) { [weak self] _ in
+        AVCaptureDevice.requestAccess(for: .Healthkit) { [weak self] _ in
             self?.checkPermissions(call)
         }
-        call.resolve(["force", true])
+    }
+
+    private func isHealthKitPermissionGranted() -> Bool{
+        switch CLLocationManager.authorizationStatus(for: .Healthkit) {
+        case .notDetermined, .restricted, .denied:
+            return false
+        case .authorized:
+            return true
+        @unknown default:
+            return false
+        }
     }
 
 }
