@@ -13,6 +13,8 @@ var healthStore = HKHealthStore()
 public class HealthDataPluginPlugin: CAPPlugin {
     private let implementation = HealthDataPlugin()
 
+    var stepCount: HKQuantityType?
+
     enum HKSampleError: Error {
         case sleepRequestFailed
         case workoutRequestFailed
