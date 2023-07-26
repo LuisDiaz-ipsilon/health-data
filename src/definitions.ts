@@ -40,8 +40,6 @@ export interface HealthDataPluginPlugin {
    */
   checkPermission(options?: CheckPermissionOptions): Promise<CheckPermissionResult>;
 
-  requestPermissions(options?: CheckPermissionOptions) : Promise<CheckPermissionResult>;
-
   /**
    * Opens the app settings screen for the current app.
    * @returns {Promise<void>} - A promise that resolves once the app settings screen is opened.
@@ -49,7 +47,92 @@ export interface HealthDataPluginPlugin {
    * await HealthDataPlugin.openAppSettings();
    */
   openAppSettings(): Promise<void>;
+
+  //IOS METHODS
+
+  requestAuthorization(authOptions: AuthorizationQueryOptions): Promise<void>;
+
+  queryHKitSampleType<T>(queryOptions:SingleQueryOptions): Promise<QueryOutput<T>>;
+
+  isAvailable(): Promise<void>;
+
+  multipleQueryHKitSampleType(queryOptions:MultipleQueryOptions): Promise<any>;
+
+  isEditionAuthorized(queryOptions: EditionQuery): Promise<void>;
+
+  multipleIsEditionAuthorized(): Promise<void>;
 }
+
+//---------- IOS interfaces
+
+export interface AuthorizationQueryOptions {
+  read: string[];
+  write: string[];
+  all: string[];
+}
+
+export interface BaseQueryOptions {
+  startDate: string;
+  endDate: string;
+  limit: number;
+}
+
+export interface SingleQueryOptions extends BaseQueryOptions {
+  sampleName: string;
+}
+
+export interface QueryOutput<T = SleepData | ActivityData | OtherData> {
+  countReturn: number;
+  resultData: T[];
+}
+
+export interface DeviceInformation {
+  name: string;
+  manufacturer: string;
+  model: string;
+  hardwareVersion: string;
+  softwareVersion: string;
+}
+
+export interface BaseData {
+  startDate: string;
+  endDate: string;
+  source: string;
+  uuid: string;
+  sourceBundleId: string;
+  device: DeviceInformation | null;
+  duration: number;
+}
+
+export interface SleepData extends BaseData  {
+  sleepState: string;
+  timeZone: string;
+}
+
+export interface ActivityData extends BaseData {
+  totalFlightsClimbed: number;
+  totalSwimmingStrokeCount: number;
+  totalEnergyBurned: number;
+  totalDistance: number;
+  workoutActivityId: number;
+  workoutActivityName: string;
+}
+
+export interface OtherData extends BaseData {
+  unitName: string;
+  value: number;
+}
+
+
+export interface MultipleQueryOptions extends BaseQueryOptions {
+  sampleNames: string[];
+}
+
+export interface EditionQuery {
+  sampleName: string;
+}
+
+//---------- IOS interfaces
 
 
 export interface CheckPermissionOptions {

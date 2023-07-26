@@ -6,8 +6,10 @@
 CAP_PLUGIN(HealthDataPluginPlugin, "HealthDataPlugin",
            CAP_PLUGIN_METHOD(echo, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(getSteps, CAPPluginReturnPromise);
-           CAP_PLUGIN_METHOD(checkPermission, CAPPluginReturnPromise);
-           CAP_PLUGIN_METHOD(requestPermissions, CAPPluginReturnPromise);
-           CAP_PLUGIN_METHOD(openAppSettings, CAPPluginReturnPromise);
-
+           CAP_PLUGIN_METHOD(requestAuthorization, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(queryHKitSampleType, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(isAvailable, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(multipleQueryHKitSampleType, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(isEditionAuthorized, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(multipleIsEditionAuthorized, CAPPluginReturnPromise);
 )
