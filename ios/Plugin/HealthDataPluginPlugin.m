@@ -8,5 +8,6 @@ CAP_PLUGIN(HealthDataPluginPlugin, "HealthDataPlugin",
            CAP_PLUGIN_METHOD(getSteps, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(checkPermission, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(requestPermissions, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(openAppSettings, CAPPluginReturnPromise);
 
 )
