@@ -589,7 +589,7 @@ public class HealthDataPluginPlugin: CAPPlugin {
         if HKHealthStore.isHealthDataAvailable(){
             stepCount = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
         } else {
-            requestPermissions(call, CallingMethod)
+            return call.reject("Health data not available")
         }
 
         call.resolve([
