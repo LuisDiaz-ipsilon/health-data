@@ -15,6 +15,24 @@ public class HealthDataPluginPlugin: CAPPlugin {
 
     var stepCount: HKQuantityType?
 
+    @objc func echo(_ call: CAPPluginCall) {
+        call.resolve([
+            "value": "Not implemented in iOS."
+        ])
+    }
+
+    @objc override func checkPermission(_ call: CAPPluginCall) {
+        call.resolve([
+            "value": "Not implemented in iOS."
+        ])
+    }
+
+    @objc func openAppSettings(_ call : CAPPluginCall){
+        call.resolve([
+            "value": "Not implemented in iOS."
+        ])
+    }
+
     enum HKSampleError: Error {
         case sleepRequestFailed
         case workoutRequestFailed
