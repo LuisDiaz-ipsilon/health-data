@@ -21,7 +21,7 @@ public class HealthDataPluginPlugin: CAPPlugin {
         ])
     }
 
-    @objc override func checkPermission(_ call: CAPPluginCall) {
+    @objc func checkPermission(_ call: CAPPluginCall) {
         call.resolve([
             "value": "Not implemented in iOS."
         ])
@@ -605,7 +605,8 @@ public class HealthDataPluginPlugin: CAPPlugin {
 
     @objc func getSteps(_ call : CAPPluginCall){
         if HKHealthStore.isHealthDataAvailable(){
-            stepCount = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+            
+            
         } else {
             return call.reject("Health data not available")
         }
