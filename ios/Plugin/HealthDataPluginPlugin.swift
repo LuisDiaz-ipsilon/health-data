@@ -1,6 +1,7 @@
 import Foundation
 import Capacitor
 import AVFoundation
+import Healthkit
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
