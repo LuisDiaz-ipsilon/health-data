@@ -15,6 +15,9 @@ export class HealthDataPluginWeb extends WebPlugin implements HealthDataPluginPl
     }
   }
 
+  async getHR(): Promise<{ name: string, count: number }>{
+  }
+
   async checkPermission(_options: CheckPermissionOptions): Promise<CheckPermissionResult> {
       if (typeof navigator === 'undefined' || !navigator.permissions) {
         throw this.unavailable('Permissions API not available in this browser');

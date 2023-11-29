@@ -26,6 +26,9 @@ export interface HealthDataPluginPlugin {
    */
   getSteps(): Promise<{ name: string, count: number }>;
 
+
+  getHR(): Promise<{ name: string, rate: number }>;
+
   /**
    * Checks the status of the permission and requests it for the first time if it hasn't been granted.
    * The permission status remains unchanged once it has been granted for the rest of the application usage.

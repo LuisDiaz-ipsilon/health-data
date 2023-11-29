@@ -29,6 +29,7 @@ import android.net.Uri;
 
 import static android.content.Context.MODE_PRIVATE;
 
+
 @CapacitorPlugin(name = "HealthDataPlugin", permissions = { @Permission(strings = { Manifest.permission.ACTIVITY_RECOGNITION }, alias = HealthDataPluginPlugin.PERMISSION_ALIAS_ACTIVITY_RECOGNITION) })
 public class HealthDataPluginPlugin extends Plugin implements SensorEventListener {
 
